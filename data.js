@@ -46,7 +46,7 @@ const TEAMS = [
     img: IMG("v1793718933/prd/tpmrctgdd1a12rh9pj3r"),
     blurb: "Storm gray with oak leaves and the Raleigh skyline.",
     games: [
-      ["2026-11-07","CHI",true,"W 9-2"],["2026-11-21","EDM",true,null],["2026-11-28","OTT",true,null],
+      ["2026-11-07","CHI",true,"W 9-2"],["2026-11-21","EDM",true,"W 7-4"],["2026-11-28","OTT",true,null],
       ["2026-12-05","TOR",true,null],["2026-12-26","PIT",true,null],["2027-01-02","NSH",true,null],
       ["2027-01-23","ANA",true,null],["2027-01-30","LAK",true,null],["2027-02-13","BUF",true,null],
       ["2027-02-27","TBL",true,null],["2027-03-13","NJD",true,null]]},
@@ -126,7 +126,7 @@ const TEAMS = [
     img: IMG("v1793719154/prd/jtdye0qa45aa2ry7dcig"),
     blurb: "Country-stage style for Smashville.",
     games: [
-      ["2026-11-07","STL",true,"W 3-1"],["2026-11-21","PIT",true,null],["2026-11-25","DAL",false,null],
+      ["2026-11-07","STL",true,"W 3-1"],["2026-11-21","PIT",true,"W 4-3"],["2026-11-25","DAL",false,null],
       ["2026-12-05","CBJ",true,null],["2026-12-26","DET",true,null],["2027-01-23","LAK",true,null],
       ["2027-02-13","ANA",true,null],["2027-02-27","LAK",true,null],["2027-03-06","MIN",true,null],
       ["2027-03-20","BOS",true,null]]},

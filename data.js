@@ -240,7 +240,7 @@ const TEAMS = [
     img: IMG("v1793719502/prd/qdrxgpwjcsasrjbiz4hp"),
     blurb: "Northern lights across the sleeves.",
     games: [
-      ["2026-11-17","OTT",true,"L 1-2"],["2026-11-21","VGK",true,null],["2026-11-23","UTA",true,null],
+      ["2026-11-17","OTT",true,"L 1-2"],["2026-11-21","VGK",true,"OTL 4-5 SO"],["2026-11-23","UTA",true,null],
       ["2026-12-10","CHI",true,null],["2027-01-19","MIN",true,null],["2027-01-21","NYR",true,null],
       ["2027-03-23","SEA",true,null],["2027-03-25","COL",true,null]]},
 ];

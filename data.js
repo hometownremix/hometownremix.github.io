@@ -6,7 +6,7 @@
 //     W = win (any), L = regulation loss, OTL = overtime or shootout loss.
 // To update after a game: change null to the result string, then bump UPDATED.
 
-const UPDATED = "2026-11-21";
+const UPDATED = "2026-11-22";
 
 const IMG = id => `https://media.d3.nhle.com/image/private/t_ratio16_9-size20/f_auto/${id}.jpg`;
 
@@ -178,7 +178,7 @@ const TEAMS = [
     img: IMG("v1793719317/prd/wbwzhsomjtidu8yourgb"),
     blurb: "Scuba blue with shark-tooth stripes.",
     games: [
-      ["2026-11-02","CGY",true,"L 1-2"],["2026-11-15","NSH",true,"W 4-2"],["2026-11-21","SEA",true,null],
+      ["2026-11-02","CGY",true,"L 1-2"],["2026-11-15","NSH",true,"W 4-2"],["2026-11-21","SEA",true,"W 4-3"],
       ["2026-12-08","SEA",true,null],["2026-12-14","VAN",true,null],["2027-01-02","TOR",true,null],
       ["2027-02-13","DET",true,null],["2027-03-20","CAR",true,null]]},
   { abbr: "SEA", name: "Seattle Kraken", color: "#001628", planned: 6,
@@ -220,7 +220,7 @@ const TEAMS = [
     img: IMG("v1793719442/prd/q97poc0d4olc6r5dhfhw"),
     blurb: "Vancouver at night, with a deep-blue orca.",
     games: [
-      ["2026-11-13","NYR",true,"L 1-5"],["2026-11-21","MIN",true,null],["2026-12-04","BUF",true,null],
+      ["2026-11-13","NYR",true,"L 1-5"],["2026-11-21","MIN",true,"W 4-3 SO"],["2026-12-04","BUF",true,null],
       ["2027-02-16","PIT",true,null],["2027-02-20","COL",true,null],["2027-03-03","CHI",true,null]]},
   { abbr: "VGK", name: "Vegas Golden Knights", color: "#00a36c", planned: 5,
     img: IMG("v1793719463/prd/yxqgqsxfxxkvhrv844u5"),

@@ -16,7 +16,8 @@
 <meta name="twitter:title" content="Hometown Remix Tracker">
 <meta name="twitter:description" content="Every NHL team's record in its 2026-27 Hometown Remix jersey, updated nightly.">
 <meta name="twitter:image" content="https://hometownremix.github.io/og.png">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏒</text></svg>">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
 <style>
   :root {
     --bg: #0d1117; --card: #161b22; --line: #2a313c; --text: #e6edf3; --muted: #8b949e;
@@ -25,9 +26,23 @@
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--text);
     font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-  header { padding: 28px 16px 12px; max-width: 1100px; margin: 0 auto; }
-  h1 { margin: 0; font-size: 26px; letter-spacing: -0.5px; }
-  .sub { color: var(--muted); margin-top: 4px; }
+  header { padding: 12px 16px 0; max-width: 1100px; margin: 0 auto; }
+  .hero { position: relative; }
+  .hero .banner { display: block; width: 100%; aspect-ratio: 3/1; object-fit: cover; border-radius: 14px; border: 1px solid var(--line); background: var(--card); }
+  .hero .logo { position: absolute; left: 14px; bottom: -26px; width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--bg); background: var(--bg); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .tag { margin: 6px 0 0 88px; color: var(--muted); font-size: 13px; min-height: 20px; }
+  .summary { max-width: 1100px; margin: 0 auto; padding: 14px 16px 4px; }
+  .summary .box { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+  .headline { font-size: 15px; }
+  .headline b { font-variant-numeric: tabular-nums; }
+  .verdict { display: inline-block; margin-top: 6px; font-size: 12.5px; font-weight: 700; padding: 2px 9px; border-radius: 999px; }
+  .summary details { margin-top: 8px; }
+  .summary summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+  .summary .facts { color: var(--muted); font-size: 12.5px; margin-top: 10px; }
+  .sortbar { position: sticky; top: 0; z-index: 5; background: rgba(13,17,23,.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .sortbar .inner { max-width: 1100px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+  .sortbar select { flex: 1; max-width: 260px; background: var(--card); color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 15px; }
   .league { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
   .stat { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
   .stat b { display: block; font-size: 20px; }
@@ -84,19 +99,25 @@
 </head>
 <body>
 <header>
-  <h1>Hometown Remix Tracker</h1>
-  <div class="sub">Every NHL team's record in its 2026-27 Hometown Remix jersey. <span id="updated"></span></div>
-  <div class="league" id="league"></div>
+  <div class="hero">
+    <img class="banner" src="banner.png" alt="Hometown Remix Tracker: every team's record in the 2026-27 Remix jerseys">
+    <img class="logo" src="logo.png" alt="HTRX logo">
+  </div>
+  <h1 class="sr">Hometown Remix Tracker</h1>
+  <div class="tag" id="updated"></div>
 </header>
-<section class="curse" id="curse"></section>
-<div class="controls" id="controls">
-  <button data-sort="best" class="on">Best record</button>
-  <button data-sort="worst">Worst record</button>
-  <button data-sort="played">Most played</button>
-  <button data-sort="boost">Remix boost</button>
-  <button data-sort="slump">Remix slump</button>
-  <button data-sort="az">A to Z</button>
-</div>
+<section class="summary"><div class="box" id="summary"></div></section>
+<div class="sortbar"><div class="inner">
+  <label for="sort">Sort by</label>
+  <select id="sort">
+    <option value="best">Best Remix record</option>
+    <option value="worst">Worst Remix record</option>
+    <option value="boost">Biggest Remix boost</option>
+    <option value="slump">Biggest Remix slump</option>
+    <option value="played">Most Remix games</option>
+    <option value="az">A to Z</option>
+  </select>
+</div></div>
 <main id="grid"></main>
 <footer>
   Records count only games where the team wore its Hometown Remix jersey. W = win, L = regulation loss, OTL = overtime or shootout loss.
@@ -144,38 +165,27 @@ function start() {
   const rows = TEAMS.map(t => { const r = record(t); return { t, r, o: other(t, r) }; });
   rows.forEach(x => { x.d = (x.r.gp && x.o && x.o.gp) ? (x.r.pct - x.o.pct) * 100 : null; });
 
-  // Curse check
+  const tot = rows.reduce((a, { r }) => ({ w: a.w + r.w, l: a.l + r.l, otl: a.otl + r.otl, gp: a.gp + r.gp }), { w: 0, l: 0, otl: 0, gp: 0 });
+  const debuted = rows.filter(x => x.r.gp > 0).length;
   const sum = (key) => rows.reduce((a, x) => { const v = x[key]; if (v) { a.w += v.w; a.l += v.l; a.otl += v.otl; } return a; }, { w: 0, l: 0, otl: 0 });
   const rem = sum("r"), oth = sum("o");
   const pp = v => { const gp = v.w + v.l + v.otl; return gp ? (2 * v.w + v.otl) / (2 * gp) * 100 : 0; };
   const rp = pp(rem), op = pp(oth), gap = rp - op;
   const better = rows.filter(x => x.d != null && x.d > 0).length;
   const tested = rows.filter(x => x.d != null).length;
-  const verdict = Math.abs(gap) < 2 ? "Not really, so far." : gap < 0 ? "So far, yes." : "Nope, they're lucky so far.";
-  if (typeof SEASON !== "undefined") {
-    document.getElementById("curse").innerHTML = `<div class="box">
-      <h2>Are the Remix jerseys cursed? ${verdict}</h2>
-      <p>Teams earn ${rp.toFixed(1)}% of possible points in Remix jerseys vs ${op.toFixed(1)}% in every other jersey. ${better} of ${tested} teams have done better in Remix.</p>
+  const hasSeason = typeof SEASON !== "undefined";
+  const [vText, vCls] = Math.abs(gap) < 2 ? ["No curse so far", "flat"] : gap < 0 ? ["Cursed? So far, yes", "down"] : ["Lucky jerseys so far", "up"];
+  document.getElementById("updated").textContent = `Updated ${fmtDate(UPDATED)} · ${debuted}/32 teams have worn theirs`;
+  document.getElementById("summary").innerHTML = `
+    <div class="headline">Teams are <b>${tot.w}-${tot.l}-${tot.otl}</b> in Remix jerseys${hasSeason ? `, earning <b>${rp.toFixed(1)}%</b> of points vs <b>${op.toFixed(1)}%</b> in other jerseys.` : "."}</div>
+    ${hasSeason ? `<span class="delta ${vCls} verdict">${vText}</span>
+    <details><summary>Curse details</summary>
       <div class="bars">
         <div class="bar"><span>In Remix</span><div class="track"><div class="fill" style="width:${rp}%;background:${gap < 0 ? "var(--loss)" : "var(--win)"}"></div></div><b>${rp.toFixed(1)}%</b></div>
         <div class="bar"><span>Other jerseys</span><div class="track"><div class="fill" style="width:${op}%;background:var(--muted)"></div></div><b>${op.toFixed(1)}%</b></div>
       </div>
-      <p style="margin-top:10px;font-size:12.5px">Through ${fmtDate(SEASON_ASOF)}. Remix ${rem.w}-${rem.l}-${rem.otl} · Other jerseys ${oth.w}-${oth.l}-${oth.otl}</p>
-    </div>`;
-  }
-
-  // League summary
-  const tot = rows.reduce((a, { r }) => ({ w: a.w + r.w, l: a.l + r.l, otl: a.otl + r.otl, gp: a.gp + r.gp }),
-    { w: 0, l: 0, otl: 0, gp: 0 });
-  const scheduled = TEAMS.reduce((n, t) => n + t.games.length, 0);
-  const debuted = rows.filter(x => x.r.gp > 0).length;
-  document.getElementById("league").innerHTML = [
-    [`${tot.w}-${tot.l}-${tot.otl}`, "Combined record"],
-    [tot.gp ? (((2 * tot.w + tot.otl) / (2 * tot.gp)) * 100).toFixed(1) + "%" : "-", "Points %"],
-    [`${debuted}/32`, "Teams debuted"],
-    [`${tot.gp}`, "Team-games played"],
-  ].map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
-  document.getElementById("updated").textContent = `Updated ${fmtDate(UPDATED)}.`;
+      <div class="facts">${better} of ${tested} teams have done better in Remix. Remix ${rem.w}-${rem.l}-${rem.otl} · Other jerseys ${oth.w}-${oth.l}-${oth.otl} · ${tot.gp} Remix team-games through ${fmtDate(SEASON_ASOF)}.</div>
+    </details>` : ""}`;
 
   const sorters = {
     best: (a, b) => (b.r.pct ?? -1) - (a.r.pct ?? -1) || b.r.w - a.r.w || (b.r.gf - b.r.ga) - (a.r.gf - a.r.ga),
@@ -224,11 +234,7 @@ function start() {
       list.map((x, i) => card(x, i, ["best","worst"].includes(mode) || (["boost","slump"].includes(mode) && x.d != null))).join("");
   }
 
-  document.getElementById("controls").addEventListener("click", e => {
-    const b = e.target.closest("button"); if (!b) return;
-    document.querySelectorAll(".controls button").forEach(x => x.classList.toggle("on", x === b));
-    render(b.dataset.sort);
-  });
+  document.getElementById("sort").addEventListener("change", e => render(e.target.value));
   render("best");
 }
 </script>

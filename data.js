@@ -191,7 +191,7 @@ const TEAMS = [
     img: IMG("v1793719354/prd/obaemq9ggqgjriosqdf3"),
     blurb: "Black, inspired by the Mississippi and the Arch.",
     games: [
-      ["2026-11-17","ANA",true,"W 8-6"],["2026-11-22","EDM",true,null],["2026-11-25","NYI",false,null],
+      ["2026-11-17","ANA",true,"W 8-6"],["2026-11-22","EDM",true,"W 5-4 SO"],["2026-11-25","NYI",false,null],
       ["2026-11-27","DAL",true,null],["2026-12-02","PIT",true,null],["2026-12-13","TBL",true,null],
       ["2027-01-26","CHI",true,null],["2027-01-30","VAN",true,null],["2027-02-25","VAN",true,null],
       ["2027-03-13","ANA",true,null]]},

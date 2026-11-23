@@ -59,6 +59,24 @@
   td.r { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .W { color: var(--win); font-weight: 700; } .L { color: var(--loss); font-weight: 700; }
   .OTL { color: var(--otl); font-weight: 700; } .up { color: var(--muted); }
+  .curse { max-width: 1100px; margin: 0 auto; padding: 4px 16px 8px; }
+  .curse .box { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .curse h2 { margin: 0 0 4px; font-size: 18px; }
+  .curse p { margin: 0; color: var(--muted); font-size: 14px; }
+  .bars { margin-top: 12px; display: grid; gap: 8px; }
+  .bar { display: grid; grid-template-columns: 110px 1fr 56px; align-items: center; gap: 10px; font-size: 13.5px; }
+  .bar .track { height: 12px; background: var(--line); border-radius: 999px; overflow: hidden; }
+  .bar .fill { height: 100%; border-radius: 999px; }
+  .bar b { text-align: right; font-variant-numeric: tabular-nums; }
+  .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .cmp div { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px; }
+  .cmp span { display: block; color: var(--muted); font-size: 11.5px; text-transform: uppercase; letter-spacing: .4px; }
+  .cmp b { font-size: 15px; font-variant-numeric: tabular-nums; }
+  .cmp em { font-style: normal; color: var(--muted); font-size: 12.5px; margin-left: 4px; }
+  .delta { display: inline-block; margin-top: 8px; font-size: 12.5px; font-weight: 700; padding: 2px 9px; border-radius: 999px; }
+  .delta.up { background: rgba(63,185,80,.15); color: var(--win); }
+  .delta.down { background: rgba(248,81,73,.15); color: var(--loss); }
+  .delta.flat { background: rgba(139,148,158,.15); color: var(--muted); }
   footer { max-width: 1100px; margin: 0 auto; padding: 0 16px 40px; color: var(--muted); font-size: 12.5px; }
   footer a { color: var(--muted); }
 </style>
@@ -70,16 +88,19 @@
   <div class="sub">Every NHL team's record in its 2026-27 Hometown Remix jersey. <span id="updated"></span></div>
   <div class="league" id="league"></div>
 </header>
+<section class="curse" id="curse"></section>
 <div class="controls" id="controls">
   <button data-sort="best" class="on">Best record</button>
   <button data-sort="worst">Worst record</button>
   <button data-sort="played">Most played</button>
+  <button data-sort="boost">Remix boost</button>
+  <button data-sort="slump">Remix slump</button>
   <button data-sort="az">A to Z</button>
 </div>
 <main id="grid"></main>
 <footer>
   Records count only games where the team wore its Hometown Remix jersey. W = win, L = regulation loss, OTL = overtime or shootout loss.
-  Points % = points earned divided by points possible.<br><br>
+  Points % = points earned divided by points possible. "Other jerseys" = full-season record from the NHL standings minus the Remix record.<br><br>
   Jersey photos: <a href="https://www.nhl.com/news/nhl-fanatics-hometown-remix-jersey-descriptions">NHL.com / Fanatics</a>.
   Schedules: team announcements on NHL.com. Results: official game recaps (AP, ESPN, NHL.com).
   Fan-made site, not affiliated with the NHL or Fanatics.<br><br>
@@ -112,7 +133,36 @@ function start() {
   }
 
   const today = new Date().toISOString().slice(0, 10);
-  const rows = TEAMS.map(t => ({ t, r: record(t) }));
+  function other(t, r) {
+    const s = (typeof SEASON !== "undefined") && SEASON[t.abbr];
+    if (!s) return null;
+    const w = s[0] - r.w, l = s[1] - r.l, otl = s[2] - r.otl;
+    if (w < 0 || l < 0 || otl < 0) return null;
+    const gp = w + l + otl;
+    return { w, l, otl, gp, pct: gp ? (2 * w + otl) / (2 * gp) : null };
+  }
+  const rows = TEAMS.map(t => { const r = record(t); return { t, r, o: other(t, r) }; });
+  rows.forEach(x => { x.d = (x.r.gp && x.o && x.o.gp) ? (x.r.pct - x.o.pct) * 100 : null; });
+
+  // Curse check
+  const sum = (key) => rows.reduce((a, x) => { const v = x[key]; if (v) { a.w += v.w; a.l += v.l; a.otl += v.otl; } return a; }, { w: 0, l: 0, otl: 0 });
+  const rem = sum("r"), oth = sum("o");
+  const pp = v => { const gp = v.w + v.l + v.otl; return gp ? (2 * v.w + v.otl) / (2 * gp) * 100 : 0; };
+  const rp = pp(rem), op = pp(oth), gap = rp - op;
+  const better = rows.filter(x => x.d != null && x.d > 0).length;
+  const tested = rows.filter(x => x.d != null).length;
+  const verdict = Math.abs(gap) < 2 ? "Not really, so far." : gap < 0 ? "So far, yes." : "Nope, they're lucky so far.";
+  if (typeof SEASON !== "undefined") {
+    document.getElementById("curse").innerHTML = `<div class="box">
+      <h2>Are the Remix jerseys cursed? ${verdict}</h2>
+      <p>Teams earn ${rp.toFixed(1)}% of possible points in Remix jerseys vs ${op.toFixed(1)}% in every other jersey. ${better} of ${tested} teams have done better in Remix.</p>
+      <div class="bars">
+        <div class="bar"><span>In Remix</span><div class="track"><div class="fill" style="width:${rp}%;background:${gap < 0 ? "var(--loss)" : "var(--win)"}"></div></div><b>${rp.toFixed(1)}%</b></div>
+        <div class="bar"><span>Other jerseys</span><div class="track"><div class="fill" style="width:${op}%;background:var(--muted)"></div></div><b>${op.toFixed(1)}%</b></div>
+      </div>
+      <p style="margin-top:10px;font-size:12.5px">Through ${fmtDate(SEASON_ASOF)}. Remix ${rem.w}-${rem.l}-${rem.otl} · Other jerseys ${oth.w}-${oth.l}-${oth.otl}</p>
+    </div>`;
+  }
 
   // League summary
   const tot = rows.reduce((a, { r }) => ({ w: a.w + r.w, l: a.l + r.l, otl: a.otl + r.otl, gp: a.gp + r.gp }),
@@ -132,9 +182,11 @@ function start() {
     worst: (a, b) => (a.r.pct ?? 2) - (b.r.pct ?? 2) || b.r.l - a.r.l,
     played: (a, b) => b.r.gp - a.r.gp || (b.r.pct ?? -1) - (a.r.pct ?? -1),
     az: (a, b) => a.t.name.localeCompare(b.t.name),
+    boost: (a, b) => (b.d ?? -999) - (a.d ?? -999),
+    slump: (a, b) => (a.d ?? 999) - (b.d ?? 999),
   };
 
-  function card({ t, r }, i, showRank) {
+  function card({ t, r, o, d }, i, showRank) {
     const games = t.games.map(([d, opp, home, res]) => {
       const kind = res ? res.split(" ")[0] : null;
       const right = res ? `<span class="${kind}">${res}</span>`
@@ -155,6 +207,11 @@ function start() {
           <div class="rec">${r.gp ? `${r.w}-${r.l}-${r.otl}` : "0-0-0"}</div></div>
         <div class="meta">${pct} · ${planned}</div>
         <p class="blurb">${t.blurb}</p>
+        ${o ? `<div class="cmp">
+          <div><span>Remix</span><b>${r.w}-${r.l}-${r.otl}</b><em>${r.pct == null ? "" : (r.pct * 100).toFixed(0) + "%"}</em></div>
+          <div><span>Other jerseys</span><b>${o.w}-${o.l}-${o.otl}</b><em>${o.pct == null ? "" : (o.pct * 100).toFixed(0) + "%"}</em></div>
+        </div>
+        ${d == null ? "" : `<span class="delta ${Math.abs(d) < 1 ? "flat" : d > 0 ? "up" : "down"}">${Math.abs(d) < 1 ? "Same in Remix" : (d > 0 ? "▲ " : "▼ ") + Math.abs(d).toFixed(0) + " pts% " + (d > 0 ? "better" : "worse") + " in Remix"}</span>`}` : ""}
         ${t.note ? `<div class="note">${t.note}</div>` : ""}
         ${t.games.length ? `<details><summary>Remix schedule (${t.games.length} games)</summary><table>${games}</table></details>` : ""}
       </div>
@@ -164,7 +221,7 @@ function start() {
   function render(mode) {
     const list = [...rows].sort(sorters[mode]);
     document.getElementById("grid").innerHTML =
-      list.map((x, i) => card(x, i, mode === "best" || mode === "worst")).join("");
+      list.map((x, i) => card(x, i, ["best","worst"].includes(mode) || (["boost","slump"].includes(mode) && x.d != null))).join("");
   }
 
   document.getElementById("controls").addEventListener("click", e => {

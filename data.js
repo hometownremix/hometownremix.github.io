@@ -6,7 +6,7 @@
 //     W = win (any), L = regulation loss, OTL = overtime or shootout loss.
 // To update after a game: change null to the result string, then bump UPDATED.
 
-const UPDATED = "2026-11-22";
+const UPDATED = "2026-11-23";
 
 const IMG = id => `https://media.d3.nhle.com/image/private/t_ratio16_9-size20/f_auto/${id}.jpg`;
 

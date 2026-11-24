@@ -6,7 +6,7 @@
 //     W = win (any), L = regulation loss, OTL = overtime or shootout loss.
 // To update after a game: change null to the result string, then bump UPDATED.
 
-const UPDATED = "2026-11-23";
+const UPDATED = "2026-11-24";
 
 const IMG = id => `https://media.d3.nhle.com/image/private/t_ratio16_9-size20/f_auto/${id}.jpg`;
 
@@ -119,7 +119,7 @@ const TEAMS = [
     blurb: "A white tribute to Montreal's history and architecture.",
     games: [
       ["2026-11-03","WPG",true,"OTL 4-5 OT"],["2026-11-07","TOR",false,"W 4-2"],["2026-11-12","BOS",false,"W 5-2"],
-      ["2026-11-14","COL",true,"L 1-4"],["2026-11-23","LAK",true,null],["2026-12-08","VGK",true,null],
+      ["2026-11-14","COL",true,"L 1-4"],["2026-11-23","LAK",true,"L 1-2"],["2026-12-08","VGK",true,null],
       ["2026-12-27","DAL",true,null],["2027-01-06","BOS",true,null],["2027-01-23","CGY",true,null],
       ["2027-03-28","DET",true,null]]},
   { abbr: "NSH", name: "Nashville Predators", color: "#041e42", planned: 10,
@@ -240,7 +240,7 @@ const TEAMS = [
     img: IMG("v1793719502/prd/qdrxgpwjcsasrjbiz4hp"),
     blurb: "Northern lights across the sleeves.",
     games: [
-      ["2026-11-17","OTT",true,"L 1-2"],["2026-11-21","VGK",true,"OTL 4-5 SO"],["2026-11-23","UTA",true,null],
+      ["2026-11-17","OTT",true,"L 1-2"],["2026-11-21","VGK",true,"OTL 4-5 SO"],["2026-11-23","UTA",true,"W 4-2"],
       ["2026-12-10","CHI",true,null],["2027-01-19","MIN",true,null],["2027-01-21","NYR",true,null],
       ["2027-03-23","SEA",true,null],["2027-03-25","COL",true,null]]},
 ];

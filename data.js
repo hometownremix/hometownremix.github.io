@@ -248,12 +248,12 @@ const TEAMS = [
 // Each team's full-season record (all jerseys), from the NHL standings.
 // [wins, regulation losses, OT/shootout losses]. Must cover the same games as the results above.
 // The page subtracts the Remix record to get the record in every other jersey.
-const SEASON_ASOF = "2026-11-22";
+const SEASON_ASOF = "2026-11-23";
 const SEASON = {
-  ANA:[11,12,1], BOS:[15,7,1], BUF:[10,10,4], CGY:[10,12,2], CAR:[18,3,3], CHI:[8,14,2],
-  COL:[13,7,3], CBJ:[9,12,0], DAL:[15,6,2], DET:[8,12,3], EDM:[17,5,4], FLA:[13,8,3],
-  LAK:[7,12,2], MIN:[17,3,5], MTL:[14,6,4], NSH:[12,6,5], NJD:[15,8,0], NYI:[11,6,5],
-  NYR:[13,9,1], OTT:[15,6,3], PHI:[9,11,6], PIT:[7,14,2], SJS:[11,12,2], SEA:[10,9,1],
-  STL:[13,9,2], TBL:[15,6,2], TOR:[8,14,3], UTA:[12,9,3], VAN:[6,19,1], VGK:[14,6,5],
-  WSH:[10,11,0], WPG:[11,9,4],
+  ANA:[11,13,1], BOS:[15,7,1], BUF:[10,10,4], CGY:[10,13,2], CAR:[18,3,3], CHI:[8,14,2],
+  COL:[13,7,3], CBJ:[9,13,0], DAL:[15,6,2], DET:[8,12,3], EDM:[17,5,4], FLA:[13,8,3],
+  LAK:[8,12,2], MIN:[18,3,5], MTL:[14,7,4], NSH:[12,6,5], NJD:[16,8,0], NYI:[11,7,5],
+  NYR:[13,9,1], OTT:[16,6,3], PHI:[9,11,6], PIT:[7,14,2], SJS:[11,13,2], SEA:[11,9,1],
+  STL:[13,9,2], TBL:[15,6,2], TOR:[9,14,3], UTA:[12,10,3], VAN:[6,19,1], VGK:[14,6,5],
+  WSH:[10,11,0], WPG:[12,9,4],
 };

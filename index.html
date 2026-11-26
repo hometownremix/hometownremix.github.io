@@ -157,7 +157,9 @@ function start() {
   function other(t, r) {
     const s = (typeof SEASON !== "undefined") && SEASON[t.abbr];
     if (!s) return null;
-    const w = s[0] - r.w, l = s[1] - r.l, otl = s[2] - r.otl;
+    // Only subtract Remix games the standings already include (on or before SEASON_ASOF).
+    const rr = record({ games: t.games.filter(g => g[0] <= SEASON_ASOF) });
+    const w = s[0] - rr.w, l = s[1] - rr.l, otl = s[2] - rr.otl;
     if (w < 0 || l < 0 || otl < 0) return null;
     const gp = w + l + otl;
     return { w, l, otl, gp, pct: gp ? (2 * w + otl) / (2 * gp) : null };

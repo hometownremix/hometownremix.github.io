@@ -6,7 +6,7 @@
 //     W = win (any), L = regulation loss, OTL = overtime or shootout loss.
 // To update after a game: change null to the result string, then bump UPDATED.
 
-const UPDATED = "2026-11-25";
+const UPDATED = "2026-11-26";
 
 const IMG = id => `https://media.d3.nhle.com/image/private/t_ratio16_9-size20/f_auto/${id}.jpg`;
 
@@ -32,7 +32,7 @@ const TEAMS = [
     img: IMG("v1793718877/prd/bck0sy7lkliqnxndymhv"),
     blurb: "Blue and gold for the City of Light.",
     games: [
-      ["2026-11-04","OTT",true,"L 1-2"],["2026-11-25","NYR",true,null],["2026-12-18","MTL",true,null],
+      ["2026-11-04","OTT",true,"L 1-2"],["2026-11-25","NYR",true,"W 5-1"],["2026-12-18","MTL",true,null],
       ["2026-12-28","DET",true,null],["2027-01-16","NSH",true,null],["2027-01-20","NYI",false,null],
       ["2027-02-26","OTT",true,null],["2027-03-04","STL",true,null]]},
   { abbr: "CGY", name: "Calgary Flames", color: "#c8102e", planned: 9,
@@ -68,14 +68,14 @@ const TEAMS = [
     blurb: "Gray, with a cannon crest and a nod to the 5th Line.",
     games: [
       ["2026-11-03","COL",true,"W 7-2"],["2026-11-05","DAL",true,"W 2-1 SO"],["2026-11-10","FLA",true,"L 1-4"],
-      ["2026-11-12","TBL",true,"L 1-3"],["2026-11-25","NJD",true,null],["2026-11-27","DET",true,null],
+      ["2026-11-12","TBL",true,"L 1-3"],["2026-11-25","NJD",true,"OTL 2-3 SO"],["2026-11-27","DET",true,null],
       ["2026-12-10","MIN",true,null],["2026-12-15","CAR",true,null],["2026-12-17","SEA",true,null],
       ["2026-12-22","MTL",true,null],["2026-12-27","EDM",true,null],["2026-12-31","WSH",true,null]]},
   { abbr: "DAL", name: "Dallas Stars", color: "#2bd600", planned: 5,
     img: IMG("v1793719017/prd/bzyqvivwlyek2agpq8qy"),
     blurb: "Neon green and the Dallas skyline at night.",
     games: [
-      ["2026-11-25","NSH",true,null],["2026-11-27","STL",false,null],["2026-12-31","NYR",true,null],
+      ["2026-11-25","NSH",true,"L 1-3"],["2026-11-27","STL",false,null],["2026-12-31","NYR",true,null],
       ["2027-01-04","DET",true,null],["2027-01-30","MIN",false,null]]},
   { abbr: "DET", name: "Detroit Red Wings", color: "#ce1126", planned: 8,
     img: IMG("v1793719034/prd/hotqsmo1bpxyvqpxdzpy"),
@@ -126,7 +126,7 @@ const TEAMS = [
     img: IMG("v1793719154/prd/jtdye0qa45aa2ry7dcig"),
     blurb: "Country-stage style for Smashville.",
     games: [
-      ["2026-11-07","STL",true,"W 3-1"],["2026-11-21","PIT",true,"W 4-3"],["2026-11-25","DAL",false,null],
+      ["2026-11-07","STL",true,"W 3-1"],["2026-11-21","PIT",true,"W 4-3"],["2026-11-25","DAL",false,"W 3-1"],
       ["2026-12-05","CBJ",true,null],["2026-12-26","DET",true,null],["2027-01-23","LAK",true,null],
       ["2027-02-13","ANA",true,null],["2027-02-27","LAK",true,null],["2027-03-06","MIN",true,null],
       ["2027-03-20","BOS",true,null]]},
@@ -142,7 +142,7 @@ const TEAMS = [
     img: IMG("v1793719192/prd/uue5gookomnn8ltvqclb"),
     blurb: "The Fisherman returns, with lighthouses and waves.",
     games: [
-      ["2026-11-05","CAR",true,"L 3-5"],["2026-11-25","STL",true,null],["2026-12-20","NYR",true,null],
+      ["2026-11-05","CAR",true,"L 3-5"],["2026-11-25","STL",true,"W 3-2 SO"],["2026-12-20","NYR",true,null],
       ["2026-12-22","BOS",true,null],["2026-12-27","OTT",true,null],["2027-01-13","PIT",true,null],
       ["2027-01-20","BUF",true,null],["2027-02-26","PHI",true,null],["2027-03-09","MTL",true,null],
       ["2027-03-20","PHI",true,null],["2027-04-01","PIT",false,null]]},
@@ -191,7 +191,7 @@ const TEAMS = [
     img: IMG("v1793719354/prd/obaemq9ggqgjriosqdf3"),
     blurb: "Black, inspired by the Mississippi and the Arch.",
     games: [
-      ["2026-11-17","ANA",true,"W 8-6"],["2026-11-22","EDM",true,"W 5-4 SO"],["2026-11-25","NYI",false,null],
+      ["2026-11-17","ANA",true,"W 8-6"],["2026-11-22","EDM",true,"W 5-4 SO"],["2026-11-25","NYI",false,"OTL 2-3 SO"],
       ["2026-11-27","DAL",true,null],["2026-12-02","PIT",true,null],["2026-12-13","TBL",true,null],
       ["2027-01-26","CHI",true,null],["2027-01-30","VAN",true,null],["2027-02-25","VAN",true,null],
       ["2027-03-13","ANA",true,null]]},
@@ -232,7 +232,7 @@ const TEAMS = [
     img: IMG("v1793719484/prd/i3m9tnd9grwvx5plttor"),
     blurb: "The Capitol Dome, marble and cherry blossoms.",
     games: [
-      ["2026-11-07","FLA",true,"W 4-3"],["2026-11-25","PHI",true,null],["2026-12-01","VAN",true,null],
+      ["2026-11-07","FLA",true,"W 4-3"],["2026-11-25","PHI",true,"W 7-3"],["2026-12-01","VAN",true,null],
       ["2026-12-28","EDM",true,null],["2027-01-12","VGK",true,null],["2027-01-14","CAR",true,null],
       ["2027-02-02","WPG",true,null],["2027-02-23","NYR",true,null],["2027-03-03","CAR",true,null],
       ["2027-03-15","TBL",true,null],["2027-03-23","DET",true,null]]},

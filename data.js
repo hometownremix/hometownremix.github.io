@@ -6,7 +6,7 @@
 //     W = win (any), L = regulation loss, OTL = overtime or shootout loss.
 // To update after a game: change null to the result string, then bump UPDATED.
 
-const UPDATED = "2026-11-27";
+const UPDATED = "2026-11-28";
 
 const IMG = id => `https://media.d3.nhle.com/image/private/t_ratio16_9-size20/f_auto/${id}.jpg`;
 
@@ -16,7 +16,7 @@ const TEAMS = [
     blurb: "A 90s throwback in bright Orange County colors.",
     games: [
       ["2026-11-08","PIT",true,"W 5-2"],["2026-11-11","NSH",true,"L 2-4"],
-      ["2026-11-27","LAK",true,null],["2026-12-06","WPG",true,null],["2026-12-22","VGK",true,null],
+      ["2026-11-27","LAK",true,"L 3-5"],["2026-12-06","WPG",true,null],["2026-12-22","VGK",true,null],
       ["2027-01-08","DAL",true,null],["2027-01-12","NYR",true,null],["2027-02-24","SEA",true,null],
       ["2027-03-05","TBL",true,null],["2027-03-18","UTA",true,null]]},
   { abbr: "BOS", name: "Boston Bruins", color: "#5c4033", planned: 12,
@@ -24,7 +24,7 @@ const TEAMS = [
     blurb: "A brown varsity sweater inspired by Boston's college culture.",
     games: [
       ["2026-11-12","MTL",true,"L 2-5"],["2026-11-14","MIN",true,"L 2-6"],
-      ["2026-11-27","TOR",true,null],["2026-12-05","DET",true,null],["2026-12-12","NJD",true,null],
+      ["2026-11-27","TOR",true,"L 1-3"],["2026-12-05","DET",true,null],["2026-12-12","NJD",true,null],
       ["2026-12-22","NYI",false,null],["2027-01-06","MTL",false,null],["2027-01-09","DET",false,null],
       ["2027-01-12","CAR",true,null],["2027-01-30","TOR",true,null],["2027-02-15","ANA",true,null],
       ["2027-03-06","PIT",true,null]]},
@@ -60,7 +60,7 @@ const TEAMS = [
     img: IMG("v1793718977/prd/n1ndhkrzo086yjhfmcjv"),
     blurb: "Mountain patterns and snowy silver accents.",
     games: [
-      ["2026-11-07","DET",true,"W 4-0"],["2026-11-27","MIN",false,null],["2026-11-28","SJS",true,null],
+      ["2026-11-07","DET",true,"W 4-0"],["2026-11-27","MIN",false,"W 4-3 SO"],["2026-11-28","SJS",true,null],
       ["2026-12-12","WSH",true,null],["2027-01-08","SEA",true,null],["2027-02-22","VGK",true,null]]},
   { abbr: "CBJ", name: "Columbus Blue Jackets", color: "#6b6e70", planned: 13,
     note: "1 more date not announced yet.",
@@ -68,14 +68,14 @@ const TEAMS = [
     blurb: "Gray, with a cannon crest and a nod to the 5th Line.",
     games: [
       ["2026-11-03","COL",true,"W 7-2"],["2026-11-05","DAL",true,"W 2-1 SO"],["2026-11-10","FLA",true,"L 1-4"],
-      ["2026-11-12","TBL",true,"L 1-3"],["2026-11-25","NJD",true,"OTL 2-3 SO"],["2026-11-27","DET",true,null],
+      ["2026-11-12","TBL",true,"L 1-3"],["2026-11-25","NJD",true,"OTL 2-3 SO"],["2026-11-27","DET",true,"L 0-2"],
       ["2026-12-10","MIN",true,null],["2026-12-15","CAR",true,null],["2026-12-17","SEA",true,null],
       ["2026-12-22","MTL",true,null],["2026-12-27","EDM",true,null],["2026-12-31","WSH",true,null]]},
   { abbr: "DAL", name: "Dallas Stars", color: "#2bd600", planned: 5,
     img: IMG("v1793719017/prd/bzyqvivwlyek2agpq8qy"),
     blurb: "Neon green and the Dallas skyline at night.",
     games: [
-      ["2026-11-25","NSH",true,"L 1-3"],["2026-11-27","STL",false,null],["2026-12-31","NYR",true,null],
+      ["2026-11-25","NSH",true,"L 1-3"],["2026-11-27","STL",false,"L 3-5"],["2026-12-31","NYR",true,null],
       ["2027-01-04","DET",true,null],["2027-01-30","MIN",false,null]]},
   { abbr: "DET", name: "Detroit Red Wings", color: "#ce1126", planned: 8,
     img: IMG("v1793719034/prd/hotqsmo1bpxyvqpxdzpy"),
@@ -110,7 +110,7 @@ const TEAMS = [
     img: IMG("v1793719116/prd/dw6ytifr32xcjn64iwlv"),
     blurb: "Black with a crescent moon and northern stars.",
     games: [
-      ["2026-11-17","NSH",true,"W 7-3"],["2026-11-27","COL",true,null],["2026-12-10","CBJ",false,null],
+      ["2026-11-17","NSH",true,"W 7-3"],["2026-11-27","COL",true,"OTL 3-4 SO"],["2026-12-10","CBJ",false,null],
       ["2026-12-12","WPG",true,null],["2026-12-26","WPG",true,null],["2027-01-02","STL",true,null],
       ["2027-01-14","FLA",true,null],["2027-01-21","DET",true,null],["2027-02-23","PIT",true,null],
       ["2027-03-19","CGY",true,null]]},
@@ -134,7 +134,7 @@ const TEAMS = [
     img: IMG("v1793719172/prd/u9egtidecsrlqed1jd1y"),
     blurb: "Black and red with a standalone NJ crest.",
     games: [
-      ["2026-11-18","MTL",true,"L 2-3"],["2026-11-27","CGY",true,null],["2026-11-28","WPG",true,null],
+      ["2026-11-18","MTL",true,"L 2-3"],["2026-11-27","CGY",true,"W 5-3"],["2026-11-28","WPG",true,null],
       ["2026-12-15","NYR",true,null],["2026-12-17","TOR",true,null],["2027-01-16","NYI",true,null],
       ["2027-01-19","DAL",true,null],["2027-02-23","CAR",true,null],["2027-03-23","PHI",true,null],
       ["2027-03-29","CAR",true,null]]},
@@ -161,7 +161,7 @@ const TEAMS = [
     img: IMG("v1793719270/prd/h8m3kwqozghijlvosa7e"),
     blurb: "Liberty Bell gray, crack and all.",
     games: [
-      ["2026-11-03","MIN",true,"L 2-4"],["2026-11-27","VAN",true,null],["2026-11-30","TOR",false,null],
+      ["2026-11-03","MIN",true,"L 2-4"],["2026-11-27","VAN",true,"W 5-2"],["2026-11-30","TOR",false,null],
       ["2026-12-03","NYI",true,null],["2026-12-14","FLA",true,null],["2026-12-18","DET",true,null],
       ["2027-01-10","CHI",true,null],["2027-01-23","NJD",true,null],["2027-02-20","NYR",true,null],
       ["2027-02-26","NYI",false,null],["2027-03-07","STL",true,null],["2027-03-18","BOS",true,null],
@@ -192,7 +192,7 @@ const TEAMS = [
     blurb: "Black, inspired by the Mississippi and the Arch.",
     games: [
       ["2026-11-17","ANA",true,"W 8-6"],["2026-11-22","EDM",true,"W 5-4 SO"],["2026-11-25","NYI",false,"OTL 2-3 SO"],
-      ["2026-11-27","DAL",true,null],["2026-12-02","PIT",true,null],["2026-12-13","TBL",true,null],
+      ["2026-11-27","DAL",true,"W 5-3"],["2026-12-02","PIT",true,null],["2026-12-13","TBL",true,null],
       ["2027-01-26","CHI",true,null],["2027-01-30","VAN",true,null],["2027-02-25","VAN",true,null],
       ["2027-03-13","ANA",true,null]]},
   { abbr: "TBL", name: "Tampa Bay Lightning", color: "#1a1a1a", planned: 10,
